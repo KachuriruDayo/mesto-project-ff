@@ -1,33 +1,18 @@
-import {imageModal} from './modal.js';
-
-// Темплейт карточки
+/** Темплейт карточки */
 const cardTemplate = document.querySelector('#card-template').content;
 
-// Функция создания карточки
-export function createCard(name, link) {
+/** Функция создания карточки */
+export function createCard(cardData, delCard, likeImg, openImageModal) {
   const cardContent = cardTemplate.querySelector('.card').cloneNode(true);
   const cardImage = cardContent.querySelector('.card__image');
   const cardTitle = cardContent.querySelector('.card__title');
   const delButton = cardContent.querySelector('.card__delete-button');
   const likeButton = cardContent.querySelector('.card__like-button');
-  cardImage.src = link;
-  cardImage.alt = name;
-  cardTitle.textContent = name;
-  delButton.addEventListener('click', delCard);
-  likeButton.addEventListener('click', likeImg);
-  cardImage.addEventListener('click', () => imageModal(name, link));
+  cardImage.src = cardData.link;
+  cardImage.alt = cardData.name;
+  cardTitle.textContent = cardData.name;
+  delButton.addEventListener('click', () => delCard(cardContent));
+  likeButton.addEventListener('click', () => likeImg(likeButton));
+  cardImage.addEventListener('click', () => openImageModal(cardData));
   return cardContent;
-}
-
-// Функция удаления карточки
-function delCard (event) {
-  const cardElement = event.target.closest('.card');
-  cardElement.remove();
-}
-
-// Функция лайка карточки
-function likeImg (event) {
-  if (event.target.classList.contains('card__like-button')) {
-  event.target.classList.toggle('card__like-button_is-active')
-  }
 }
