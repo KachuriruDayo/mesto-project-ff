@@ -95,5 +95,5 @@ addButton.addEventListener('click', () => {
 addCardForm.addEventListener('submit', handleAddNewCard);
 popupNewСard.addEventListener('click', closeModalOverlay);
 
-/** Слушатель закрытия модального окна по клику на оверлей для открытой картинки  */
+/** Слушатель закрытия модального окна по клику на оверлей для открытой картинкe  */
 popupBigPicture.addEventListener('click', closeModalOverlay);
