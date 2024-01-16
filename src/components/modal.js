@@ -1,7 +1,6 @@
 /** функция открытия модального окна */
 export function openModal (popupElement) {
   popupElement.classList.add('popup_is-opened'); 
-  popupElement.querySelector('.popup__close').addEventListener('click', () => closeModal(popupElement));
   document.addEventListener('keydown', closeModalEscape);
 }
 
@@ -14,10 +13,15 @@ export function closeModal (popupElement) {
 
 /** функция закрытия модального окна через ESC */
 function closeModalEscape (event) {
-  const openedPopup = document.querySelector('.popup_is-opened');
   if (event.key ==='Escape') {
-    if (openedPopup) {
-      closeModal(openedPopup);
+    if (document.querySelector('.popup_is-opened')) {
+      closeModal(document.querySelector('.popup_is-opened'));
     }
   }
+}
+
+/** функия закрытия окна по клику на оверлей */ 
+export function closeModalOverlay (event) {
+  if (event.target.classList.contains('popup_is-opened'))
+  closeModal(event.target);
 }

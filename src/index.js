@@ -1,14 +1,14 @@
 /** Импортируемые элементы */
 import './pages/index.css';
 import {initialCards} from "./components/cardsContent.js";
-import {createCard} from "./components/card.js";
-import {openModal, closeModal} from './components/modal.js';
+import {createCard, deleteCard, likeImg} from "./components/card.js";
+import {openModal, closeModal, closeModalOverlay} from './components/modal.js';
 
 /** DOM узлы */
 const cardContainer = document.querySelector('.places__list');
 
 /** Вывести карточки на страницу */
-initialCards.forEach(cardData => cardContainer.append(createCard(cardData, delCard, likeImg, openImageModal)));
+initialCards.forEach(cardData => cardContainer.append(createCard(cardData, deleteCard, likeImg, openImageModal)));
 
 /** Popup редактирования профиля */
 const editButton = document.querySelector('.profile__edit-button');
@@ -21,40 +21,24 @@ const profileTitle = document.querySelector('.profile__title');
 const profileDescription = document.querySelector('.profile__description');
 
 /** Popup добавления новой карточки */
-const popupNewcard = document.querySelector('.popup_type_new-card');
+const popupNewСard = document.querySelector('.popup_type_new-card');
 const addButton = document.querySelector('.profile__add-button');
 const addCardForm = document.forms.new_place;
 const namePlaceInput = addCardForm.elements.place_name;
 const linkInput = addCardForm.elements.link;
 
 /** Popup большая картинка */
-const popupBigpicture = document.querySelector('.popup_type_image');
-const popupImage = popupBigpicture.querySelector('.popup__image');
-const popupCaption = popupBigpicture.querySelector('.popup__caption');
-
-/** функия закрытия окна по клику на оверлей */ 
-function closeModalOverlay (event) {
-  if (event.target.classList.contains('popup_is-opened'))
-  closeModal(event.target);
-}
-
-/** Функция удаления карточки */
-function delCard (card) {
-  card.remove();
-}
-
-/** Функция лайка карточки */
-function likeImg (button) {
-  button.classList.toggle('card__like-button_is-active');
-}
+const popupBigPicture = document.querySelector('.popup_type_image');
+const popupImage = popupBigPicture.querySelector('.popup__image');
+const popupCaption = popupBigPicture.querySelector('.popup__caption');
 
 /** Функция открытия карточки */ 
 function openImageModal (cardData) {
+  popupBigPicture.querySelector('.popup__close').addEventListener('click', () => closeModal(popupBigPicture));
   popupImage.src = cardData.link;
   popupImage.alt = cardData.name;
   popupCaption.textContent = cardData.name;
-  popupBigpicture.addEventListener('click', closeModalOverlay);
-  openModal(popupBigpicture);
+  openModal(popupBigPicture);
 }
 
 /** функция открытия окна редактирования профиля */
@@ -89,22 +73,27 @@ function handleAddNewCard(evt) {
   newCardObj['name'] = namePlaceValue;
   newCardObj['link'] = linkValue;
   /** Выберите элементы, куда должны быть вставлены значения полей */
-  cardContainer.prepend(createCard(newCardObj, delCard, likeImg, openImageModal));
+  cardContainer.prepend(createCard(newCardObj, deleteCard, likeImg, openImageModal));
   /** Сброс полей */
   addCardForm.reset();
-  closeModal(popupNewcard);
+  closeModal(popupNewСard);
 }
 
 /** слушатели окна редактирования */
 editButton.addEventListener('click', () => {
-  popupProfile.addEventListener('click', closeModalOverlay);
+  popupProfile.querySelector('.popup__close').addEventListener('click', () => closeModal(popupProfile));
   openEditProfilePopup(popupProfile); 
 });
 profileForm.addEventListener('submit', handleEditProfileSubmit);
+popupProfile.addEventListener('click', closeModalOverlay);
 
 /** слушатели окна добавления карточки */
 addButton.addEventListener('click', () => {
-  popupNewcard.addEventListener('click', closeModalOverlay);
-  openModal(popupNewcard); 
+  popupNewСard.querySelector('.popup__close').addEventListener('click', () => closeModal(popupNewСard));
+  openModal(popupNewСard); 
 });
 addCardForm.addEventListener('submit', handleAddNewCard);
+popupNewСard.addEventListener('click', closeModalOverlay);
+
+/** Слушатель закрытия модального окна по клику на оверлей для открытой картинки  */
+popupBigPicture.addEventListener('click', closeModalOverlay);
