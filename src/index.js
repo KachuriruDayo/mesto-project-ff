@@ -13,6 +13,7 @@ initialCards.forEach(cardData => cardContainer.append(createCard(cardData, delet
 /** Popup редактирования профиля */
 const editButton = document.querySelector('.profile__edit-button');
 const popupProfile = document.querySelector('.popup_type_edit');
+const popupProfileClose = popupProfile.querySelector('.popup__close');
 const profileForm = document.forms.edit_profile;
 const nameInput = profileForm.elements.name;
 const jobInput = profileForm.elements.description;
@@ -23,6 +24,7 @@ const profileDescription = document.querySelector('.profile__description');
 /** Popup добавления новой карточки */
 const popupNewСard = document.querySelector('.popup_type_new-card');
 const addButton = document.querySelector('.profile__add-button');
+const popupNewСardClose = popupNewСard.querySelector('.popup__close');
 const addCardForm = document.forms.new_place;
 const namePlaceInput = addCardForm.elements.place_name;
 const linkInput = addCardForm.elements.link;
@@ -31,10 +33,10 @@ const linkInput = addCardForm.elements.link;
 const popupBigPicture = document.querySelector('.popup_type_image');
 const popupImage = popupBigPicture.querySelector('.popup__image');
 const popupCaption = popupBigPicture.querySelector('.popup__caption');
+const popupBigPictureClose = popupBigPicture.querySelector('.popup__close');
 
 /** Функция открытия карточки */ 
 function openImageModal (cardData) {
-  popupBigPicture.querySelector('.popup__close').addEventListener('click', () => closeModal(popupBigPicture));
   popupImage.src = cardData.link;
   popupImage.alt = cardData.name;
   popupCaption.textContent = cardData.name;
@@ -80,20 +82,17 @@ function handleAddNewCard(evt) {
 }
 
 /** слушатели окна редактирования */
-editButton.addEventListener('click', () => {
-  popupProfile.querySelector('.popup__close').addEventListener('click', () => closeModal(popupProfile));
-  openEditProfilePopup(popupProfile); 
-});
+editButton.addEventListener('click', () => openEditProfilePopup(popupProfile));
 profileForm.addEventListener('submit', handleEditProfileSubmit);
+popupProfileClose.addEventListener('click', () => closeModal(popupProfile));
 popupProfile.addEventListener('click', closeModalOverlay);
 
 /** слушатели окна добавления карточки */
-addButton.addEventListener('click', () => {
-  popupNewСard.querySelector('.popup__close').addEventListener('click', () => closeModal(popupNewСard));
-  openModal(popupNewСard); 
-});
+addButton.addEventListener('click', () => openModal(popupNewСard));
 addCardForm.addEventListener('submit', handleAddNewCard);
 popupNewСard.addEventListener('click', closeModalOverlay);
+popupNewСardClose.addEventListener('click', () => closeModal(popupNewСard));
 
-/** Слушатель закрытия модального окна по клику на оверлей для открытой картинкe  */
+/** Слушатели модального окна открытой картинки  */
 popupBigPicture.addEventListener('click', closeModalOverlay);
+popupBigPictureClose.addEventListener('click', () => closeModal(popupBigPicture));

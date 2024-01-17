@@ -7,15 +7,15 @@ export function openModal (popupElement) {
 /** функция закрытия модального окна */
 export function closeModal (popupElement) {
   popupElement.classList.remove('popup_is-opened');
-  popupElement.querySelector('.popup__close').removeEventListener('click', () => closeModal(popupElement));
   document.removeEventListener('keydown', closeModalEscape);
 }
 
 /** функция закрытия модального окна через ESC */
 function closeModalEscape (event) {
   if (event.key ==='Escape') {
-    if (document.querySelector('.popup_is-opened')) {
-      closeModal(document.querySelector('.popup_is-opened'));
+    const openedPopup = document.querySelector('.popup_is-opened');
+    if (openedPopup) {
+      closeModal(openedPopup);
     }
   }
 }
