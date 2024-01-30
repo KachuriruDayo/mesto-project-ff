@@ -1,0 +1,23 @@
+.form__input-error {
+  visibility: hidden;
+}
+
+.form__input-error_active {
+  visibility: visible;
+  display: block;
+  position: absolute;
+  margin-block-start: -10px;
+  height: 12px; 
+  color: #F00;
+  font-family: Inter;
+  font-size: 12px;
+  font-weight: 400;
+}
+
+.form__input-error_active:last-of-type {
+  margin-block-start: 0px;
+}
+
+.form__input_type_error {
+  border-bottom: 1px solid #F00;
+}

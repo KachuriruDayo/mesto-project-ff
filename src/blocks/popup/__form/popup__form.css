@@ -1,3 +1,8 @@
+.form__set {
+  border: none;
+  padding: 0;
+}
+
 .popup__form {
   margin-top: 27px;
 }

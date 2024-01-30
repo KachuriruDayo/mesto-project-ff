@@ -1,13 +1,32 @@
 .profile__image {
+  position: relative;
   width: 120px;
   height: 120px;
   -webkit-border-radius: 50%;
   -moz-border-radius: 50%;
   border-radius: 50%;
-  background-image: url(../../../images/avatar.jpg);
+  background-image: url(../../../images/standart-avatar.jpg);
   background-size: cover;
   background-position: center;
   margin: 0 29px 0 0;
+}
+
+.profile__avatar-button {
+  position: absolute;
+  width: 120px;
+  height: 120px;
+  -webkit-border-radius: 50%;
+  -moz-border-radius: 50%;
+  border-radius: 50%;
+  border: none;
+  background: transparent;
+  background-position: center;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.profile__avatar-button:hover  {
+  background: rgba(0, 0, 0, 0.80) url('../../../images/big_edit-icon.svg') center no-repeat;
 }
 
 @media screen and (max-width: 740px) {
