@@ -23,6 +23,7 @@ const validationConfig = {
 const editButton = document.querySelector('.profile__edit-button');
 const popupProfile = document.querySelector('.popup_type_edit');
 const popupProfileClose = popupProfile.querySelector('.popup__close');
+const popupProfileSubmit = popupProfile.querySelector('.popup__button');
 const profileForm = document.forms.edit_profile;
 const nameInput = profileForm.elements.name;
 const jobInput = profileForm.elements.description;
@@ -35,6 +36,7 @@ const profileAvatar = document.querySelector('.profile__image')
 const popupAvatarEdit = document.querySelector('.popup_type_edit-avatar');
 const editAvatarButton = document.querySelector('.profile__avatar-button');
 const popupAvatarClose = popupAvatarEdit.querySelector('.popup__close');
+const popupAvatarSubmit = popupAvatarEdit.querySelector('.popup__button');
 const avatarForm = document.forms.new_avatar;
 const avatarLinkInput = avatarForm.elements.avatar_link;
 
@@ -47,6 +49,7 @@ const сardDeleteForm = document.forms.delete_card;
 const popupNewСard = document.querySelector('.popup_type_new-card');
 const addButton = document.querySelector('.profile__add-button');
 const popupNewСardClose = popupNewСard.querySelector('.popup__close');
+const popupNewСardSubmit = popupNewСard.querySelector('.popup__button');
 const addCardForm = document.forms.new_place;
 const namePlaceInput = addCardForm.elements.place_name;
 const linkInput = addCardForm.elements.link;
@@ -95,12 +98,13 @@ const handleEditProfileSubmit = (evt) => {
   patchUserData(nameValue, jobValue)
   /** Вставьте новые значения с помощью textContent */
   .then((data) => {
+    popupProfileSubmit.textContent = 'Сохранение...';
     profileTitle.textContent = data.name;
     profileDescription.textContent = data.about;
+      /** Сброс полей */
+    profileForm.reset();
+    closeModal(popupProfile);
   });
-  /** Сброс полей */
-  profileForm.reset();
-  closeModal(popupProfile);
 }
 
 /** Обработчик «отправки» формы обновления аватара профиля */
@@ -111,11 +115,12 @@ const handleEditAvatarSubmit = (evt) => {
   patchUserAvatar(avatarLink)
   /** Вставьте новые значения */
   .then ((data) => {
+    popupAvatarSubmit.textContent = 'Сохранение...';
     profileAvatar.style.backgroundImage = `url(${data.avatar})`;
+    /** Сброс полей */
+    avatarForm.reset();
+    closeModal(popupAvatarEdit);
   });
-  /** Сброс полей */
-  avatarForm.reset();
-  closeModal(popupAvatarEdit);
 }
 
 /** функция открытия окна добавления новой карточки */
@@ -134,12 +139,13 @@ const handleAddNewCard = (evt) => {
   Promise.all([postNewCard(namePlaceValue, linkValue), getUserData()])
   /** получение обьекта с параметрами карточки */
   .then (([cardData, userData]) => {
+    popupNewСardSubmit.textContent = 'Сохранение...';
     /** Выберите элементы, куда должны быть вставлены значения полей */
     cardContainer.prepend(createCard(cardData, userData, openDeleteCardPopup, likeImg, openImageModal));
+      /** Сброс полей */
+    addCardForm.reset();
+    closeModal(popupNewСard);
   });
-  /** Сброс полей */
-  addCardForm.reset();
-  closeModal(popupNewСard);
 }
 
 /** функция открытия popup удаления карточки */

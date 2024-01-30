@@ -15,13 +15,13 @@ export const getInitialCards = async () => {
   return fetch(`${apiTemplate.baseUrl}/cards`, {
     headers: apiTemplate.headers
   })
-    .then(res => {
-      if (res.ok) {
-        return res.json();
-      }
-      // если ошибка, отклоняем промис
-      return Promise.reject(`Ошибка вывода карточек: ${res.status}`);
-    });
+  .then(res => {
+    if (res.ok) {
+      return res.json();
+    }
+    // если ошибка, отклоняем промис
+    return Promise.reject(`Ошибка вывода карточек: ${res.status}`);
+  });
 }
 
 /** Запрос данных профиля  */
@@ -29,13 +29,13 @@ export const getUserData = async () => {
   return fetch(`${apiTemplate.baseUrl}/users/me`, {
     headers: apiTemplate.headers
   })
-    .then(res => {
-      if (res.ok) {
-        return res.json();
-      }
-      // если ошибка, отклоняем промис
-      return Promise.reject(`Ошибка вывода данных о пользователе: ${res.status}`);
-    });
+  .then(res => {
+    if (res.ok) {
+      return res.json();
+  }
+  // если ошибка, отклоняем промис
+  return Promise.reject(`Ошибка вывода данных о пользователе: ${res.status}`);
+  });
 }
 
 /** Запрос обновления данных профиля  */
@@ -47,14 +47,14 @@ export const patchUserData = async (name, job) => {
       name: name,
       about: job
     })
-})
-.then(res => {
-  if (res.ok) {
+  })
+  .then(res => {
+    if (res.ok) {
     return res.json();
   }
   // если ошибка, отклоняем промис
   return Promise.reject(`Ошибка получения данных о пользователе: ${res.status}`);
-})
+  })
 }
 
 /** Запрос обновления аватара профиля  */
@@ -65,14 +65,14 @@ export const patchUserAvatar = async (link) => {
     body: JSON.stringify({
       avatar: link
     })
-})
-.then(res => {
-  if (res.ok) {
+  })
+  .then(res => {
+    if (res.ok) {
     return res.json();
   }
   // если ошибка, отклоняем промис
   return Promise.reject(`Ошибка получения данных о аватаре пользователе: ${res.status}`);
-})
+  })
 }
 
 /** Запрос добавления новой карточки */
@@ -84,14 +84,14 @@ export const postNewCard = async (namePlace, link) => {
       name: namePlace,
       link: link
     })
-})
-.then(res => {
-  if (res.ok) {
-    return res.json();
-  }
-  // если ошибка, отклоняем промис
-  return Promise.reject(`Ошибка получения данных о новой карточке: ${res.status}`);
-})
+  })
+  .then(res => {
+    if (res.ok) {
+      return res.json();
+    }
+    // если ошибка, отклоняем промис
+    return Promise.reject(`Ошибка получения данных о новой карточке: ${res.status}`);
+  })
 }
 
 /** Запрос удаления своей карточки */
@@ -110,14 +110,14 @@ export const putLikeCard = async (cardId) => {
   return fetch(`${apiTemplate.baseUrl}/cards/likes/${cardId}`, {
     method: 'PUT',
     headers: apiTemplate.headers,
-})
-.then(res => {
-  if (res.ok) {
-    return res.json();
-  }
-  // если ошибка, отклоняем промис
-  return Promise.reject(`Ошибка лайка карточки: ${res.status}`);
-})
+  })
+  .then(res => {
+    if (res.ok) {
+      return res.json();
+    }
+    // если ошибка, отклоняем промис
+      return Promise.reject(`Ошибка лайка карточки: ${res.status}`);
+  })
 }
 
 /** Запрос отмены лайка карточки */
@@ -125,12 +125,12 @@ export const deleteLikeCard = async (cardId) => {
   return fetch(`${apiTemplate.baseUrl}/cards/likes/${cardId}`, {
     method: 'DELETE',
     headers: apiTemplate.headers,
-})
-.then(res => {
-  if (res.ok) {
-    return res.json();
-  }
-  // если ошибка, отклоняем промис
-  return Promise.reject(`Ошибка отмены лайка карточки: ${res.status}`);
-})
+  })
+  .then(res => {
+    if (res.ok) {
+      return res.json();
+    }
+    // если ошибка, отклоняем промис
+    return Promise.reject(`Ошибка отмены лайка карточки: ${res.status}`);
+  })
 }
