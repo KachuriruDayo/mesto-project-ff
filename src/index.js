@@ -63,7 +63,6 @@ const popupBigPictureClose = popupBigPicture.querySelector('.popup__close');
 /** Вывод fetch запросов */
 Promise.all([getInitialCards(), getUserData()])
   .then(([cardList, userData]) => {
-    console.log(cardList, userData);
     cardList.forEach(cardData => cardContainer.append(createCard(cardData, userData, openDeleteCardPopup, likeImg, openImageModal)));
     profileTitle.textContent = userData.name;
     profileDescription.textContent = userData.about;
