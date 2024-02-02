@@ -51,8 +51,10 @@ const hasInvalidInput = (inputList) => {
 const toggleButtonState = (inputList, buttonElement, config) => {
   if (hasInvalidInput(inputList)) {
   buttonElement.classList.add(config.inactiveButtonClass);
+  buttonElement.setAttribute('disabled', '');
   } else {
   buttonElement.classList.remove(config.inactiveButtonClass);
+  buttonElement.removeAttribute('disabled', '');
   } 
 };
 
@@ -82,5 +84,5 @@ export const resetValidation = (formElement, config) => {
   });
   
   submitButton.classList.add(config.inactiveButtonClass);
-  submitButton.textContent = 'Сохранить';
+  submitButton.setAttribute('disabled', '');
 }

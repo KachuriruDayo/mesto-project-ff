@@ -1,3 +1,17 @@
+/** Установка слушателей на закрытие попапов по кнопке и через оверлей */
+const popups = document.querySelectorAll('.popup')
+
+popups.forEach((popup) => {
+  popup.addEventListener('mousedown', (evt) => {
+      if (evt.target.classList.contains('popup_is-opened')) {
+        closeModal(evt.target)
+      }
+      if (evt.target.classList.contains('popup__close')) {
+        closeModal(popup)
+      }
+  })
+})
+
 /** функция открытия модального окна */
 export const openModal = (popupElement) => {
   popupElement.classList.add('popup_is-opened'); 
@@ -18,10 +32,4 @@ const closeModalEscape = (event) => {
       closeModal(openedPopup);
     }
   }
-}
-
-/** функия закрытия окна по клику на оверлей */ 
-export const closeModalOverlay = (event) => {
-  if (event.target.classList.contains('popup_is-opened'))
-  closeModal(event.target);
 }

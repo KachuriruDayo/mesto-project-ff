@@ -27,7 +27,7 @@ export const createCard = (cardData, userData, openDeleteCardPopup, likeImg, ope
   cardImage.alt = cardData.name;
   cardTitle.textContent = cardData.name;
   likeScore.textContent = Object.keys(cardData.likes).length;
-  delButton.addEventListener('click', () => openDeleteCardPopup(cardContent, cardData));
+  delButton.addEventListener('click', () => openDeleteCardPopup(cardContent, cardData._id));
   likeButton.addEventListener('click', () => likeImg(likeButton, cardData, likeScore));
   cardImage.addEventListener('click', () => openImageModal(cardData));
   return cardContent;
@@ -35,15 +35,13 @@ export const createCard = (cardData, userData, openDeleteCardPopup, likeImg, ope
 
 /** Функция удаления карточки */
 export const submitDeleteCard = (card, cardData) => {
-  deleteCard(cardData._id)
-  .then (result => {
-    if(result.ok) {
-      card.remove();
-    } else {
-      console.log(`Карточка не удалена! :${result.status}`)
-    }
+  deleteCard(cardData)
+  .then (() => {
+    card.remove(); 
+  }) 
+  .catch (result => {
+    console.log(`Ошибка удаления карточки : ${result}`);
   });
-  
 }
 
 /** Функция лайка карточки */
@@ -53,12 +51,18 @@ export const likeImg = (button, cardData, likeScore) => {
     .then (data => {
       likeScore.textContent = Object.keys(data.likes).length;
       button.classList.add('card__like-button_is-active');
+    })
+    .catch (result => {
+      console.log(`Ошибка лайка карточки : ${result}`);
     });
   } else {
     deleteLikeCard(cardData._id)
     .then(data => {
       likeScore.textContent = Object.keys(data.likes).length;
       button.classList.remove('card__like-button_is-active');
+    })
+    .catch (result => {
+      console.log(`Ошибка убирания лайка карточки : ${result}`);
     });
   }
 }
