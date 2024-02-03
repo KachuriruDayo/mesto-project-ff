@@ -12,24 +12,24 @@ const apiConfig = {
 }
 
 /** Функция создания запросов */
-const request = async (baseUrl, endpoint, options) => {
+const request = async (endpoint, options) => {
   // принимает два аргумента: урл и объект опций, как и `fetch`
-  return fetch(`${baseUrl + endpoint}`, options).then(checkResponse)
+  return fetch(`${apiConfig.baseUrl + endpoint}`, options).then(checkResponse)
 }
 
 /** Запрос карточек */
 export const getInitialCards = () => {
-  return request(apiConfig.baseUrl, '/cards', {headers: apiConfig.headers})
+  return request('/cards', {headers: apiConfig.headers})
 }
 
 /** Запрос данных профиля  */
 export const getUserData = () => {
-  return request(apiConfig.baseUrl, '/users/me', {headers: apiConfig.headers})
+  return request('/users/me', {headers: apiConfig.headers})
 }
 
 /** Запрос обновления данных профиля  */
 export const patchUserData = (name, job) => {
-  return request(apiConfig.baseUrl, '/users/me', {
+  return request('/users/me', {
     method: 'PATCH',
     headers: apiConfig.headers,
     body: JSON.stringify({
@@ -41,7 +41,7 @@ export const patchUserData = (name, job) => {
 
 /** Запрос обновления аватара профиля  */
 export const patchUserAvatar = (link) => {
-  return request(apiConfig.baseUrl, '/users/me/avatar', {
+  return request('/users/me/avatar', {
     method: 'PATCH',
     headers: apiConfig.headers,
     body: JSON.stringify({
@@ -52,7 +52,7 @@ export const patchUserAvatar = (link) => {
 
 /** Запрос добавления новой карточки */
 export const postNewCard = (namePlace, link) => {
-  return request(apiConfig.baseUrl, '/cards', {
+  return request('/cards', {
     method: 'POST',
     headers: apiConfig.headers,
     body: JSON.stringify({
@@ -64,7 +64,7 @@ export const postNewCard = (namePlace, link) => {
 
 /** Запрос удаления своей карточки */
 export const deleteCard = (cardId) => {
-  return request(apiConfig.baseUrl, `/cards/${cardId}`, {
+  return request(`/cards/${cardId}`, {
     method: 'DELETE',
     headers: apiConfig.headers,
   })
@@ -72,7 +72,7 @@ export const deleteCard = (cardId) => {
 
 /** Запрос лайка карточки */
 export const putLikeCard = (cardId) => {
-  return request(apiConfig.baseUrl, `/cards/likes/${cardId}`, {
+  return request(`/cards/likes/${cardId}`, {
     method: 'PUT',
     headers: apiConfig.headers,
   })
@@ -80,7 +80,7 @@ export const putLikeCard = (cardId) => {
 
 /** Запрос отмены лайка карточки */
 export const deleteLikeCard = async (cardId) => {
-  return request(apiConfig.baseUrl,`/cards/likes/${cardId}`, {
+  return request(`/cards/likes/${cardId}`, {
     method: 'DELETE',
     headers: apiConfig.headers,
   })

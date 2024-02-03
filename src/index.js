@@ -2,15 +2,15 @@
 import './pages/index.css';
 import {createCard, submitDeleteCard, likeImg} from "./components/card.js";
 import {openModal, closeModal} from './components/modal.js';
-import {enableValidation, resetValidation} from './components/validation.js';
+import {enableValidation, resetValidation, disabledButton} from './components/validation.js';
 import { getInitialCards, getUserData, patchUserData, patchUserAvatar, postNewCard} from './components/api.js';
 import {handleSubmit} from './components/utils.js';
 
-/** DOM узлы */
-const cardContainer = document.querySelector('.places__list');
-
-/** Конфиг валидации */
-const validationConfig = {
+/** общие константы */
+let user;
+let functionData = {};
+let markedCard = {};
+const submitData = {closeModal, disabledButton, validationConfig: {
   fieldsetSelector: ".form__set",
   formSelector: ".popup__form",
   inputSelector: ".popup__input",
@@ -18,11 +18,11 @@ const validationConfig = {
   inactiveButtonClass: "popup__button-disabled",
   inputErrorClass: "form__input_type_error",
   errorClass: "form__input-error_active",
-}
+}};
+const popups = document.querySelectorAll('.popup')
 
-/** общие константы */
-let user;
-let markedCard = {};
+/** DOM узлы */
+const cardContainer = document.querySelector('.places__list');
 
 /** Popup редактирования профиля */
 const editButton = document.querySelector('.profile__edit-button');
@@ -61,14 +61,18 @@ const popupCaption = popupBigPicture.querySelector('.popup__caption');
 Promise.all([getInitialCards(), getUserData()])
   .then(([cardList, userData]) => {
     user = userData;
-    cardList.forEach(cardData => cardContainer.append(createCard(cardData, userData, openDeleteCardPopup, likeImg, openImageModal)));
+    functionData = {openDeleteCardPopup, likeImg, openImageModal};
+    cardList.forEach(cardData => cardContainer.append(createCard(cardData, userData, functionData)));
     profileTitle.textContent = userData.name;
     profileDescription.textContent = userData.about;
     profileAvatar.style.backgroundImage = `url(${userData.avatar})`;
+  })
+  .catch(([cardList, userData]) => {
+    console.log(`ошибка получения данных: ${cardList} ${userData}`);
   });
 
 /** вызов валидации */
-enableValidation(validationConfig);
+enableValidation(submitData.validationConfig);
 
 /** Функция открытия карточки */ 
 const openImageModal = (cardData) => {
@@ -80,6 +84,7 @@ const openImageModal = (cardData) => {
 
 /** функция открытия окна редактирования профиля */
 const openEditProfilePopup = (popup) => {
+  resetValidation(popup, submitData.validationConfig);
   nameInput.value = profileTitle.textContent;
   jobInput.value = profileDescription.textContent;
   openModal(popup);
@@ -93,7 +98,7 @@ const handleEditProfileSubmit= (evt) => {
       profileDescription.textContent = userData.about;
     });
   }
-  handleSubmit(makeRequest, evt, popupProfile, closeModal, validationConfig, resetValidation);
+  handleSubmit(makeRequest, evt, popupProfile, submitData);
 }
 
 /** Обработчик «отправки» формы обновления аватара профиля */
@@ -103,17 +108,17 @@ const handleEditAvatarSubmit= (evt) => {
       profileAvatar.style.backgroundImage = `url(${data.avatar})`;
     });
   }
-  handleSubmit(makeRequest, evt, popupAvatarEdit, closeModal, validationConfig, resetValidation);
+  handleSubmit(makeRequest, evt, popupAvatarEdit, submitData);
 }
 
 /** Обработчик «отправки» формы добавления новой карточки */
 const handleAddNewCard= (evt) => {
   function makeRequest() {
     return postNewCard(namePlaceInput.value, linkInput.value).then((cardData) => {
-      cardContainer.prepend(createCard(cardData, user, openDeleteCardPopup, likeImg, openImageModal));
+      cardContainer.prepend(createCard(cardData, user, functionData));
     });
   }
-  handleSubmit(makeRequest, evt, popupNewСard, closeModal, validationConfig, resetValidation);
+  handleSubmit(makeRequest, evt, popupNewСard, submitData);
 }
 
 /** функция открытия popup удаления карточки */
@@ -136,7 +141,16 @@ addButton.addEventListener('click', () => openModal(popupNewСard));
 addCardForm.addEventListener('submit', handleAddNewCard);
 
 /** Слушатель субмита окна удаления карточки */
-сardDeleteForm.addEventListener('submit', () => {
-  submitDeleteCard(markedCard.card, markedCard.cardId);
-  closeModal(popupCardDelete);
-});
+сardDeleteForm.addEventListener('submit', () => submitDeleteCard(markedCard, popupCardDelete, closeModal));
+
+/** Установка слушателей на закрытие попапов по кнопке и через оверлей */
+popups.forEach((popup) => {
+  popup.addEventListener('mousedown', (evt) => {
+      if (evt.target.classList.contains('popup_is-opened')) {
+        closeModal(evt.target)
+      }
+      if (evt.target.classList.contains('popup__close')) {
+        closeModal(popup)
+      }
+  })
+})

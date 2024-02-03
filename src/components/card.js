@@ -5,7 +5,7 @@ import {putLikeCard, deleteLikeCard, deleteCard} from './api.js';
 const cardTemplate = document.querySelector('#card-template').content;
 
 /** Функция создания карточки */
-export const createCard = (cardData, userData, openDeleteCardPopup, likeImg, openImageModal) => {
+export const createCard = (cardData, userData, functionData) => {
   const cardContent = cardTemplate.querySelector('.card').cloneNode(true);
   const cardImage = cardContent.querySelector('.card__image');
   const cardTitle = cardContent.querySelector('.card__title');
@@ -27,17 +27,18 @@ export const createCard = (cardData, userData, openDeleteCardPopup, likeImg, ope
   cardImage.alt = cardData.name;
   cardTitle.textContent = cardData.name;
   likeScore.textContent = Object.keys(cardData.likes).length;
-  delButton.addEventListener('click', () => openDeleteCardPopup(cardContent, cardData._id));
-  likeButton.addEventListener('click', () => likeImg(likeButton, cardData, likeScore));
-  cardImage.addEventListener('click', () => openImageModal(cardData));
+  delButton.addEventListener('click', () => functionData.openDeleteCardPopup(cardContent, cardData._id));
+  likeButton.addEventListener('click', () => functionData.likeImg(likeButton, cardData, likeScore));
+  cardImage.addEventListener('click', () => functionData.openImageModal(cardData));
   return cardContent;
 }
 
 /** Функция удаления карточки */
-export const submitDeleteCard = (card, cardData) => {
-  deleteCard(cardData)
+export const submitDeleteCard = (data, popup, closeModal) => {
+  deleteCard(data.cardId)
   .then (() => {
-    card.remove(); 
+    data.card.remove();
+    closeModal(popup);
   }) 
   .catch (result => {
     console.log(`Ошибка удаления карточки : ${result}`);

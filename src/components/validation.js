@@ -17,6 +17,9 @@ const setEventListeners = (formElement, config) => {
   const inputList = Array.from(formElement.querySelectorAll(config.inputSelector));
   const buttonElement = formElement.querySelector(config.submitButtonSelector);
   toggleButtonState(inputList, buttonElement, config);
+  formElement.addEventListener('reset', () => {
+    disabledButton(buttonElement, config)
+  });
   inputList.forEach((inputElement) => {
     inputElement.addEventListener('input', function () {
       checkInputValidity(formElement, inputElement, config);
@@ -50,8 +53,7 @@ const hasInvalidInput = (inputList) => {
 /** Функция переключения состояния submit button */
 const toggleButtonState = (inputList, buttonElement, config) => {
   if (hasInvalidInput(inputList)) {
-  buttonElement.classList.add(config.inactiveButtonClass);
-  buttonElement.setAttribute('disabled', '');
+    disabledButton(buttonElement, config);
   } else {
   buttonElement.classList.remove(config.inactiveButtonClass);
   buttonElement.removeAttribute('disabled', '');
@@ -83,6 +85,11 @@ export const resetValidation = (formElement, config) => {
     hideInputError(formElement, input, config);
   });
   
-  submitButton.classList.add(config.inactiveButtonClass);
-  submitButton.setAttribute('disabled', '');
+  disabledButton(submitButton, config);
+}
+
+/** функция деактивации кнопки */
+export const disabledButton = (button, config) => {
+  button.classList.add(config.inactiveButtonClass);
+  button.setAttribute('disabled', '');
 }
